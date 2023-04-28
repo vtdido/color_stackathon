@@ -13,20 +13,20 @@ async function seed() {
   // Creating colors
   const colors = await Promise.all([
     await Color.create({ name: 'red', value: [255, 0, 0] }),
-    await Color.create({ name: 'orange', value: [255, 150, 0] }),
     await Color.create({ name: 'yellow', value: [255, 255, 0] }),
-    await Color.create({ name: 'lime-green', value: [0, 255, 0] }),
-    await Color.create({ name: 'green', value: [0, 165, 30] }),
-    await Color.create({ name: 'teal', value: [0, 180, 170] }),
+    await Color.create({ name: 'green', value: [0, 255, 0] }),
     await Color.create({ name: 'cyan', value: [0, 255, 255] }),
-    await Color.create({ name: 'sky-blue', value: [0, 150, 255] }),
     await Color.create({ name: 'blue', value: [0, 0, 255] }),
-    await Color.create({ name: 'purple', value: [150, 0, 255] }),
     await Color.create({ name: 'magenta', value: [255, 0, 255] }),
-    await Color.create({ name: 'pink', value: [255, 110, 210] }),
-    await Color.create({ name: 'brown', value: [150, 75, 0] }),
     await Color.create({ name: 'black', value: [0, 0, 0] }),
     await Color.create({ name: 'white', value: [255, 255, 255] }),
+    // await Color.create({ name: 'orange', value: [255, 150, 0] }),
+    // await Color.create({ name: 'pigment-green', value: [0, 165, 30] }),
+    // await Color.create({ name: 'teal', value: [0, 180, 170] }),
+    // await Color.create({ name: 'sky-blue', value: [0, 150, 255] }),
+    // await Color.create({ name: 'purple', value: [150, 0, 255] }),
+    // await Color.create({ name: 'pink', value: [255, 110, 210] }),
+    // await Color.create({ name: 'brown', value: [150, 75, 0] }),
   ]);
   console.log(`Seeded ${colors.length} colors`);
 
