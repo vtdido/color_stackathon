@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // import { Link } from "react-router-dom";
 import { fetchColorLibrary, selectColorLibrary } from '../features/colorLibrarySlice';
+import Palette from './Palette';
 
 const ColorLibrary = () => {
   const dispatch = useDispatch();
   const colorLibrary = useSelector(selectColorLibrary);
+  const [selectedColor, setSelectedColor] = useState('transparent');
   // const userId = useSelector((state) => state.auth.me.id);
   // const [memoCartItems, setMemoCartItems] = useState(cartItems);
 
@@ -43,6 +45,10 @@ const ColorLibrary = () => {
   useEffect(() => {
     dispatch(fetchColorLibrary());
   }, [dispatch]);
+
+  const handleSelectColor = (color) => {
+    setSelectedColor(color);
+  };
 
   // const handleRemove = (productId, event) => {
   //   event.preventDefault();
@@ -197,13 +203,15 @@ const ColorLibrary = () => {
         {colorLibrary && colorLibrary.length
         ? colorLibrary.map(color => (
           <div 
-            className='cell'
+            className='filled-cell'
             key={color.id}
             style={{ backgroundColor: rgb(color)}}
+            onClick={() => handleSelectColor(rgb(color))}
           />
         ))
         : null}
       </div>
+      <Palette />
     </div>
   );
 };

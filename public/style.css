@@ -11,7 +11,29 @@
   background-color: lightgray;
 }
 
-.cell {
+.filled-cell, .empty-cell {
   width: 40px;
   height: 40px;
+  border-radius: 8px;
+}
+
+.filled-cell:hover {
+  outline: 2px solid white;
+}
+
+.empty-cell {
+  background-color: transparent;
+  border: 2px dashed white;
+  /* outline: 2px solid aqua; */
+}
+
+.empty-cell:hover {
+  background-color: rgb(190, 190, 190);
+}
+
+#palette {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 768px;
+  background-color: lightgray;
 }

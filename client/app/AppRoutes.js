@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 // import AuthForm from '../components/AuthForm';
 import Home from '../components/Home';
 import ColorLibrary from '../components/ColorLibrary';
+// import Palette from '../components/Palette';
 import { me } from './store';
 
 /**
@@ -85,6 +86,7 @@ const AppRoutes = () => {
       /> */}
         <Route path='/*' element={<Home />} />
         <Route path='/colors' element={<ColorLibrary />} />
+        {/* <Route path='/colors' element={<Palette />} /> */}
       </Routes>
     </div>
   );
