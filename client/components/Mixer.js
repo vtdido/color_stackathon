@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMixerColors, addMixerColor, deleteMixerColors, selectMixerColors } from '../features/mixerSlice';
+import { addMixerColor, deleteMixerColors, selectMixerColors } from '../features/mixerSlice';
 import { addNewColor } from '../features/colorLibrarySlice';
 import ColorLibrary from './ColorLibrary';
 
@@ -33,6 +33,25 @@ const Mixer = (props) => {
     />
   ));
 
+  useEffect(() => {
+    const mixItUp = () => {
+      const red = [];
+      const green = [];
+      const blue = [];
+      mixerColors.forEach(color => {
+        red.push(color.value[0]);
+        green.push(color.value[1]);
+        blue.push(color.value[2]);
+      });
+      const colorAvg = [];
+      colorAvg.push(Math.round(red.reduce((acc, num) => acc + num, 0)/red.length));
+      colorAvg.push(Math.round(green.reduce((acc, num) => acc + num, 0)/green.length));
+      colorAvg.push(Math.round(blue.reduce((acc, num) => acc + num, 0)/blue.length));
+      return `rgb(${colorAvg.join(',')})`;
+    }
+    setMixedColor(mixItUp());
+  }, [mixerColors]);
+
   const handleColorSelect = (color) => {
     setSelectedColor(color);
   };
@@ -51,29 +70,11 @@ const Mixer = (props) => {
       return nextStatus;
     });
   };
-
-  const mixItUp = () => {
-    const red = [];
-    const green = [];
-    const blue = [];
-    mixerColors.forEach(color => {
-      red.push(color.value[0]);
-      green.push(color.value[1]);
-      blue.push(color.value[2]);
-    });
-    const colorAvg = [];
-    colorAvg.push(Math.round(red.reduce((acc, num) => acc + num, 0)/red.length));
-    colorAvg.push(Math.round(green.reduce((acc, num) => acc + num, 0)/green.length));
-    colorAvg.push(Math.round(blue.reduce((acc, num) => acc + num, 0)/blue.length));
-    return colorAvg;
-  }
   
   const handleMix = () => {
-    // console.log('mixerColors: ', mixerColors);
-    // const coolor = mixItUp();
-    // console.log('coolor: ', coolor);
-    // setMixedColor(coolor);
-    dispatch(addNewColor(mixItUp()));
+    const colorArray = mixedColor.slice(4, -1).split(',');
+    const numberArray = colorArray.map(string => Number(string));
+    dispatch(addNewColor(numberArray));
     setSelectedColor('transparent');
     dispatch(deleteMixerColors());
     props.setTrigger(false);
@@ -99,7 +100,7 @@ const Mixer = (props) => {
           Preview
           <div
             id='preview-window'
-            style={{ backgroundColor: selectedColor }} />
+            style={{ backgroundColor: mixedColor }} />
         </div>
       </div>
     </div>

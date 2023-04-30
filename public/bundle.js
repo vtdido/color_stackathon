@@ -6437,6 +6437,30 @@ var Mixer = function Mixer(props) {
       }
     });
   });
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var mixItUp = function mixItUp() {
+      var red = [];
+      var green = [];
+      var blue = [];
+      mixerColors.forEach(function (color) {
+        red.push(color.value[0]);
+        green.push(color.value[1]);
+        blue.push(color.value[2]);
+      });
+      var colorAvg = [];
+      colorAvg.push(Math.round(red.reduce(function (acc, num) {
+        return acc + num;
+      }, 0) / red.length));
+      colorAvg.push(Math.round(green.reduce(function (acc, num) {
+        return acc + num;
+      }, 0) / green.length));
+      colorAvg.push(Math.round(blue.reduce(function (acc, num) {
+        return acc + num;
+      }, 0) / blue.length));
+      return "rgb(".concat(colorAvg.join(','), ")");
+    };
+    setMixedColor(mixItUp());
+  }, [mixerColors]);
   var handleColorSelect = function handleColorSelect(color) {
     setSelectedColor(color);
   };
@@ -6456,33 +6480,12 @@ var Mixer = function Mixer(props) {
       return nextStatus;
     });
   };
-  var mixItUp = function mixItUp() {
-    var red = [];
-    var green = [];
-    var blue = [];
-    mixerColors.forEach(function (color) {
-      red.push(color.value[0]);
-      green.push(color.value[1]);
-      blue.push(color.value[2]);
-    });
-    var colorAvg = [];
-    colorAvg.push(Math.round(red.reduce(function (acc, num) {
-      return acc + num;
-    }, 0) / red.length));
-    colorAvg.push(Math.round(green.reduce(function (acc, num) {
-      return acc + num;
-    }, 0) / green.length));
-    colorAvg.push(Math.round(blue.reduce(function (acc, num) {
-      return acc + num;
-    }, 0) / blue.length));
-    return colorAvg;
-  };
   var handleMix = function handleMix() {
-    // console.log('mixerColors: ', mixerColors);
-    // const coolor = mixItUp();
-    // console.log('coolor: ', coolor);
-    // setMixedColor(coolor);
-    dispatch((0,_features_colorLibrarySlice__WEBPACK_IMPORTED_MODULE_3__.addNewColor)(mixItUp()));
+    var colorArray = mixedColor.slice(4, -1).split(',');
+    var numberArray = colorArray.map(function (string) {
+      return Number(string);
+    });
+    dispatch((0,_features_colorLibrarySlice__WEBPACK_IMPORTED_MODULE_3__.addNewColor)(numberArray));
     setSelectedColor('transparent');
     dispatch((0,_features_mixerSlice__WEBPACK_IMPORTED_MODULE_2__.deleteMixerColors)());
     props.setTrigger(false);
@@ -6508,7 +6511,7 @@ var Mixer = function Mixer(props) {
   }, "Preview", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     id: "preview-window",
     style: {
-      backgroundColor: selectedColor
+      backgroundColor: mixedColor
     }
   })))) : null;
 };
@@ -6624,22 +6627,21 @@ var addNewColor = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncTh
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           _context2.prev = 0;
-          console.log('mixedColor: ', mixedColor);
-          _context2.next = 4;
+          _context2.next = 3;
           return axios__WEBPACK_IMPORTED_MODULE_1__["default"].post('/api/colors', mixedColor);
-        case 4:
+        case 3:
           _yield$axios$post = _context2.sent;
           data = _yield$axios$post.data;
           return _context2.abrupt("return", data);
-        case 9:
-          _context2.prev = 9;
+        case 8:
+          _context2.prev = 8;
           _context2.t0 = _context2["catch"](0);
           console.error(_context2.t0.response.date);
-        case 12:
+        case 11:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, null, [[0, 9]]);
+    }, _callee2, null, [[0, 8]]);
   }));
   return function (_x) {
     return _ref2.apply(this, arguments);

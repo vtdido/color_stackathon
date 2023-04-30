@@ -17,7 +17,6 @@ export const addNewColor = createAsyncThunk(
   'addNewColor',
   async (mixedColor) => {
     try {
-      console.log('mixedColor: ', mixedColor);
       const { data } = await axios.post('/api/colors', mixedColor);
       return data;
     } catch (err) {

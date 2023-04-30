@@ -15,9 +15,10 @@ router.get('/', async (req, res, next) => {
 // POST new color for library
 router.post('/', async (req, res, next) => {
   try {
-    console.log('req.body: ', req.body);
-    const colors = await Color.create({ value: req.body });
-    res.send(colors);
+    if (typeof req.body[0] === 'number') {
+      const colors = await Color.create({ value: req.body });
+      res.send(colors);
+    }
   } catch (err) {
     next(err);
   }
