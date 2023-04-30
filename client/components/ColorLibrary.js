@@ -10,10 +10,10 @@ const ColorLibrary = (props) => {
     dispatch(fetchColorLibrary());
   }, [dispatch]);
 
-  const rgb = (color) => `rgb(${color.value[0]},${color.value[1]},${color.value[2]})`;
+  const rgba = (color) => `rgba(${color.value[0]},${color.value[1]},${color.value[2]},${color.value[3]})`;
 
   const handleColorSelect = (color) => {
-    props.onColorSelect(rgb(color));
+    props.onColorSelect(rgba(color));
   };
 
   return (
@@ -23,7 +23,7 @@ const ColorLibrary = (props) => {
         <div 
           className='library-cell'
           key={color.id}
-          style={{ backgroundColor: rgb(color)}}
+          style={{ backgroundColor: rgba(color)}}
           onClick={() => handleColorSelect(color)}
         />
       ))

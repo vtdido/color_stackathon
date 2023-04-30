@@ -38,16 +38,19 @@ const Mixer = (props) => {
       const red = [];
       const green = [];
       const blue = [];
+      const alpha = [];
       mixerColors.forEach(color => {
         red.push(color.value[0]);
         green.push(color.value[1]);
         blue.push(color.value[2]);
+        alpha.push(color.value[3]);
       });
       const colorAvg = [];
       colorAvg.push(Math.round(red.reduce((acc, num) => acc + num, 0)/red.length));
       colorAvg.push(Math.round(green.reduce((acc, num) => acc + num, 0)/green.length));
       colorAvg.push(Math.round(blue.reduce((acc, num) => acc + num, 0)/blue.length));
-      return `rgb(${colorAvg.join(',')})`;
+      colorAvg.push(Math.round(alpha.reduce((acc, num) => acc + num, 0)/alpha.length));
+      return `rgba(${colorAvg.join(',')})`;
     }
     setMixedColor(mixItUp());
   }, [mixerColors]);
@@ -77,8 +80,10 @@ const Mixer = (props) => {
     dispatch(addNewColor(numberArray));
     setSelectedColor('transparent');
     dispatch(deleteMixerColors());
-    props.setTrigger(false);
+    // call the onMixColor function to close the mixer popup and add the mixed color to the palette component
+    props.onMixColor(`rgba(${numberArray.join(',')})`);
   };
+  
   
   return (props.trigger) ? (
     <div id='mixer'>

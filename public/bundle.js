@@ -6292,7 +6292,6 @@ function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefine
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
-// import AppRoutes from "./AppRoutes";
 
 
 var App = function App() {
@@ -6300,17 +6299,33 @@ var App = function App() {
     _useState2 = _slicedToArray(_useState, 2),
     popupTrigger = _useState2[0],
     setPopupTrigger = _useState2[1];
+  var addColorToPalette = function addColorToPalette(color) {
+    var emptyCell = document.querySelector('.empty-cell');
+    if (emptyCell) {
+      emptyCell.style.backgroundColor = color;
+      emptyCell.classList = 'filled-cell';
+      emptyCell.onClick.remove('handleSelectEmptyCell');
+    }
+  };
+  var handleMixColor = function handleMixColor(color) {
+    // close the mixer popup by setting the popupTrigger variable to false
+    setPopupTrigger(false);
+    // add the mixed color to the palette component by passing it as an argument to a function in the palette component
+    addColorToPalette(color);
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     id: "main"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Mixer__WEBPACK_IMPORTED_MODULE_2__["default"], {
     trigger: popupTrigger,
-    setTrigger: setPopupTrigger
+    setTrigger: setPopupTrigger,
+    onMixColor: handleMixColor
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("header", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "Coloring - Stackathon")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Navbar__WEBPACK_IMPORTED_MODULE_1__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
     src: "/dragon.jpeg",
     alt: "dragon"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Palette__WEBPACK_IMPORTED_MODULE_3__["default"], {
     trigger: popupTrigger,
-    setTrigger: setPopupTrigger
+    setTrigger: setPopupTrigger,
+    addColorToPalette: addColorToPalette
   }));
 };
 /* harmony default export */ __webpack_exports__["default"] = (App);
@@ -6360,11 +6375,11 @@ var ColorLibrary = function ColorLibrary(props) {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     dispatch((0,_features_colorLibrarySlice__WEBPACK_IMPORTED_MODULE_2__.fetchColorLibrary)());
   }, [dispatch]);
-  var rgb = function rgb(color) {
-    return "rgb(".concat(color.value[0], ",").concat(color.value[1], ",").concat(color.value[2], ")");
+  var rgba = function rgba(color) {
+    return "rgba(".concat(color.value[0], ",").concat(color.value[1], ",").concat(color.value[2], ",").concat(color.value[3], ")");
   };
   var handleColorSelect = function handleColorSelect(color) {
-    props.onColorSelect(rgb(color));
+    props.onColorSelect(rgba(color));
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     id: "color-library"
@@ -6373,7 +6388,7 @@ var ColorLibrary = function ColorLibrary(props) {
       className: "library-cell",
       key: color.id,
       style: {
-        backgroundColor: rgb(color)
+        backgroundColor: rgba(color)
       },
       onClick: function onClick() {
         return handleColorSelect(color);
@@ -6442,10 +6457,12 @@ var Mixer = function Mixer(props) {
       var red = [];
       var green = [];
       var blue = [];
+      var alpha = [];
       mixerColors.forEach(function (color) {
         red.push(color.value[0]);
         green.push(color.value[1]);
         blue.push(color.value[2]);
+        alpha.push(color.value[3]);
       });
       var colorAvg = [];
       colorAvg.push(Math.round(red.reduce(function (acc, num) {
@@ -6457,7 +6474,10 @@ var Mixer = function Mixer(props) {
       colorAvg.push(Math.round(blue.reduce(function (acc, num) {
         return acc + num;
       }, 0) / blue.length));
-      return "rgb(".concat(colorAvg.join(','), ")");
+      colorAvg.push(Math.round(alpha.reduce(function (acc, num) {
+        return acc + num;
+      }, 0) / alpha.length));
+      return "rgba(".concat(colorAvg.join(','), ")");
     };
     setMixedColor(mixItUp());
   }, [mixerColors]);
@@ -6488,7 +6508,8 @@ var Mixer = function Mixer(props) {
     dispatch((0,_features_colorLibrarySlice__WEBPACK_IMPORTED_MODULE_3__.addNewColor)(numberArray));
     setSelectedColor('transparent');
     dispatch((0,_features_mixerSlice__WEBPACK_IMPORTED_MODULE_2__.deleteMixerColors)());
-    props.setTrigger(false);
+    // call the onMixColor function to close the mixer popup and add the mixed color to the palette component
+    props.onMixColor("rgba(".concat(numberArray.join(','), ")"));
   };
   return props.trigger ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     id: "mixer"
@@ -6551,8 +6572,13 @@ var Navbar = function Navbar() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _features_mixerSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../features/mixerSlice */ "./client/features/mixerSlice.js");
+
+
 
 var Palette = function Palette(props) {
+  var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
   var paletteCells = function paletteCells() {
     var cells = [];
     for (var i = 0; i < 24; i++) {
@@ -6562,6 +6588,7 @@ var Palette = function Palette(props) {
   };
   var handleSelectEmptyCell = function handleSelectEmptyCell() {
     props.setTrigger(true);
+    dispatch((0,_features_mixerSlice__WEBPACK_IMPORTED_MODULE_2__.addMixerColor)([0, 0, 0, 0]));
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     id: "palette"
