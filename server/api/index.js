@@ -1,8 +1,8 @@
 const router = require('express').Router();
 module.exports = router;
 
-router.use('/users', require('./routes/users'));
 router.use('/colors', require('./routes/colors'));
+router.use('/mixer', require('./routes/mixer'));
 // router.use('/palette', require('./routes/palette'));
 router.use('/pages', require('./routes/pages'));
 

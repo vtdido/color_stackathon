@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Palette = () => {
+const Palette = (props) => {
   const paletteCells = () => {
     const cells = [];
     for(let i = 0; i < 24; i++) {
@@ -9,6 +9,10 @@ const Palette = () => {
     return cells;
   };
 
+  const handleSelectEmptyCell = () => {
+    props.setTrigger(true);
+  }
+
   return (
     <div id='palette'>
       {paletteCells() && paletteCells().length
@@ -16,8 +20,9 @@ const Palette = () => {
         <div
           className='empty-cell'
           key={`${cell}`}
-          // onClick={() => className='selected-cell'}
-        />
+          onClick={handleSelectEmptyCell}>
+          Add color?
+        </div>
       ))
       : null}
     </div>

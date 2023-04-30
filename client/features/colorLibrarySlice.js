@@ -13,6 +13,19 @@ export const fetchColorLibrary = createAsyncThunk(
   }
 );
 
+export const addNewColor = createAsyncThunk(
+  'addNewColor',
+  async (mixedColor) => {
+    try {
+      console.log('mixedColor: ', mixedColor);
+      const { data } = await axios.post('/api/colors', mixedColor);
+      return data;
+    } catch (err) {
+      console.error(err.response.date);
+    }
+  }
+);
+
 export const colorLibrarySlice = createSlice({
   name: 'colorLibrary',
   initialState: [],
@@ -20,6 +33,9 @@ export const colorLibrarySlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchColorLibrary.fulfilled, (state, action) => {
       return action.payload;
+    });
+    builder.addCase(addNewColor.fulfilled, (state, action) => {
+      state.push(action.payload);
     });
   },
 });

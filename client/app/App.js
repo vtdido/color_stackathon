@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from '../components/Navbar';
-import AppRoutes from "./AppRoutes";
+// import AppRoutes from "./AppRoutes";
+import Mixer from '../components/Mixer';
+import Palette from '../components/Palette';
 
 const App = () => {
+  const [popupTrigger, setPopupTrigger] = useState(false);
+
   return (
-    <div>
+    <div id='main'>
+      <Mixer trigger={popupTrigger} setTrigger={setPopupTrigger} />
+      <header>
+        <h1>Coloring - Stackathon</h1>
+      </header>
       <Navbar />
-      <AppRoutes />
+      <img src='/dragon.jpeg' alt='dragon' />
+      <Palette trigger={popupTrigger} setTrigger={setPopupTrigger} />
     </div>
   );
 };
