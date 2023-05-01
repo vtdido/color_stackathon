@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Navbar from '../components/Navbar';
-// import AppRoutes from "./AppRoutes";
 import Mixer from '../components/Mixer';
 import Palette from '../components/Palette';
 

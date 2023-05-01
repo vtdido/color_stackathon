@@ -6292,7 +6292,6 @@ function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefine
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
-// import AppRoutes from "./AppRoutes";
 
 
 var App = function App() {
@@ -6424,16 +6423,56 @@ var Mixer = function Mixer(props) {
     _useState4 = _slicedToArray(_useState3, 2),
     mixedColor = _useState4[0],
     setMixedColor = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(['empty', 'blank', 'blank', 'blank', 'blank', 'blank', 'blank', 'blank', 'blank', 'blank', 'blank', 'blank']),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([{
+      status: 'empty',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }]),
     _useState6 = _slicedToArray(_useState5, 2),
     cellStatus = _useState6[0],
     setCellStatus = _useState6[1];
-  var mixerCells = cellStatus.map(function (status, index) {
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+    _useState8 = _slicedToArray(_useState7, 2),
+    cellIndex = _useState8[0],
+    setCellIndex = _useState8[1];
+  var mixerCells = cellStatus.map(function (cell, index) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "mixer-cell-".concat(status),
+      className: "mixer-cell-".concat(cell.status),
       key: "".concat(index),
       style: {
-        backgroundColor: index === 0 && selectedColor
+        backgroundColor: cell.color
       }
     });
   });
@@ -6463,20 +6502,29 @@ var Mixer = function Mixer(props) {
   }, [mixerColors]);
   var handleColorSelect = function handleColorSelect(color) {
     setSelectedColor(color);
+    setCellStatus(function (prevStatus) {
+      var nextStatus = _toConsumableArray(prevStatus);
+      nextStatus[cellIndex].color = color;
+      return nextStatus;
+    });
   };
   var handleAddColor = function handleAddColor() {
     setCellStatus(function (prevStatus) {
       var nextStatus = _toConsumableArray(prevStatus);
-      var emptyIndex = nextStatus.indexOf('empty');
+      var emptyIndex = nextStatus.findIndex(function (cell) {
+        return cell.status === 'empty';
+      });
       if (emptyIndex !== -1) {
-        nextStatus[emptyIndex] = 'filled';
-        nextStatus[emptyIndex + 1] = 'empty';
+        nextStatus[emptyIndex].status = 'filled';
+        nextStatus[emptyIndex + 1].status = 'empty';
+        nextStatus[emptyIndex].color = selectedColor;
       }
       var colorArray = selectedColor.slice(4, -1).split(',');
       var numberArray = colorArray.map(function (string) {
         return Number(string);
       });
       dispatch((0,_features_mixerSlice__WEBPACK_IMPORTED_MODULE_2__.addMixerColor)(numberArray));
+      setCellIndex(cellIndex + 1);
       return nextStatus;
     });
   };
@@ -6488,6 +6536,44 @@ var Mixer = function Mixer(props) {
     dispatch((0,_features_colorLibrarySlice__WEBPACK_IMPORTED_MODULE_3__.addNewColor)(numberArray));
     setSelectedColor('transparent');
     dispatch((0,_features_mixerSlice__WEBPACK_IMPORTED_MODULE_2__.deleteMixerColors)());
+    setCellStatus([{
+      status: 'empty',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }, {
+      status: 'blank',
+      color: 'transparent'
+    }]);
+    setCellIndex(0);
     props.setTrigger(false);
   };
   return props.trigger ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {

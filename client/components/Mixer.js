@@ -11,25 +11,26 @@ const Mixer = (props) => {
   const [selectedColor, setSelectedColor] = useState('transparent');
   const [mixedColor, setMixedColor] = useState('transparent');
   const [cellStatus, setCellStatus] = useState([
-    'empty',
-    'blank',
-    'blank',
-    'blank',
-    'blank',
-    'blank',
-    'blank',
-    'blank',
-    'blank',
-    'blank',
-    'blank',
-    'blank'
+    { status: 'empty', color: 'transparent' },
+    { status: 'blank', color: 'transparent' },
+    { status: 'blank', color: 'transparent' },
+    { status: 'blank', color: 'transparent' },
+    { status: 'blank', color: 'transparent' },
+    { status: 'blank', color: 'transparent' },
+    { status: 'blank', color: 'transparent' },
+    { status: 'blank', color: 'transparent' },
+    { status: 'blank', color: 'transparent' },
+    { status: 'blank', color: 'transparent' },
+    { status: 'blank', color: 'transparent' },
+    { status: 'blank', color: 'transparent' }
   ]);
+  const [cellIndex, setCellIndex] = useState(0);
 
-  const mixerCells = cellStatus.map((status, index) => (
+  const mixerCells = cellStatus.map((cell, index) => (
     <div
-      className={`mixer-cell-${status}`}
+      className={`mixer-cell-${cell.status}`}
       key={`${index}`}
-      style={{ backgroundColor: (index === 0 && selectedColor) }}
+      style={{ backgroundColor: cell.color }}
     />
   ));
 
@@ -54,19 +55,26 @@ const Mixer = (props) => {
 
   const handleColorSelect = (color) => {
     setSelectedColor(color);
+    setCellStatus(prevStatus => {
+      const nextStatus = [...prevStatus];
+      nextStatus[cellIndex].color = color;
+      return nextStatus;
+    });
   };
 
   const handleAddColor = () => {
     setCellStatus(prevStatus => {
       const nextStatus = [...prevStatus];
-      const emptyIndex = nextStatus.indexOf('empty');
+      const emptyIndex = nextStatus.findIndex(cell => cell.status === 'empty');
       if (emptyIndex !== -1) {
-        nextStatus[emptyIndex] = 'filled';
-        nextStatus[emptyIndex + 1] = 'empty';
+        nextStatus[emptyIndex].status = 'filled';
+        nextStatus[emptyIndex + 1].status = 'empty';
+        nextStatus[emptyIndex].color = selectedColor;
       }
       const colorArray = selectedColor.slice(4, -1).split(',');
       const numberArray = colorArray.map(string => Number(string));
       dispatch(addMixerColor(numberArray));
+      setCellIndex(cellIndex + 1);
       return nextStatus;
     });
   };
@@ -77,6 +85,21 @@ const Mixer = (props) => {
     dispatch(addNewColor(numberArray));
     setSelectedColor('transparent');
     dispatch(deleteMixerColors());
+    setCellStatus([
+      { status: 'empty', color: 'transparent' },
+      { status: 'blank', color: 'transparent' },
+      { status: 'blank', color: 'transparent' },
+      { status: 'blank', color: 'transparent' },
+      { status: 'blank', color: 'transparent' },
+      { status: 'blank', color: 'transparent' },
+      { status: 'blank', color: 'transparent' },
+      { status: 'blank', color: 'transparent' },
+      { status: 'blank', color: 'transparent' },
+      { status: 'blank', color: 'transparent' },
+      { status: 'blank', color: 'transparent' },
+      { status: 'blank', color: 'transparent' }
+    ]);
+    setCellIndex(0);
     props.setTrigger(false);
   };
   
