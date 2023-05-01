@@ -101,6 +101,8 @@ const Mixer = (props) => {
     ]);
     setCellIndex(0);
     props.setTrigger(false);
+    // call the onMixColor function to close the mixer popup and add the mixed color to the palette component
+    props.onMixColor(`rgb(${numberArray.join(',')})`);
   };
   
   return (props.trigger) ? (

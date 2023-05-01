@@ -3,7 +3,7 @@ module.exports = router;
 
 router.use('/colors', require('./routes/colors'));
 router.use('/mixer', require('./routes/mixer'));
-// router.use('/palette', require('./routes/palette'));
+router.use('/palette', require('./routes/palette'));
 router.use('/pages', require('./routes/pages'));
 
 router.use((req, res, next) => {
